@@ -58,24 +58,35 @@
         
         function displayBook() {
             libraryContainer.innerHTML = "";
-            myLibrary.forEach(Book => {
+        
+            myLibrary.forEach((book, index) => {
                 const card = document.createElement("div");
                 card.classList.add("card");
                 card.innerHTML = `
-                    <h3>${Book.title}</h3>
-                    <p><strong>Author:</strong> ${Book.author}</p>
-                    <p><strong>Pages:</strong> ${Book.pages}</p>
-                    <p><strong>Status:</strong> ${Book.status}</p>
+                    <h3>${book.title}</h3>
+                    <p><strong>Author:</strong> ${book.author}</p>
+                    <p><strong>Pages:</strong> ${book.pages}</p>
+                    <p><strong>Status:</strong> ${book.status}</p>
+                    <button class="delete-button" data-index="${index}">Delete</button>
                 `;
                 libraryContainer.appendChild(card); 
             });
+            
+            document.querySelectorAll(".delete-button").forEach(button => {
+                button.addEventListener("click", function() {
+                    const bookindex = this.getAttribute("data-index");
+                    myLibrary.splice(bookindex, 1)
+                    displayBook();
+                });
+            });
         }
+
 
         addButton.addEventListener('click', function() {
             bookForm.classList.toggle("hidden");
         })
 
-        bookForm.addEventListener("submit", function() {
+        bookForm.addEventListener("submit", function(event) {
             event.preventDefault();
 
             const title = document.getElementById("title").value;
