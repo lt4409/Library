@@ -20,7 +20,8 @@
         }
 
         function addBookToLibrary(){
-            myLibrary.push(Book);
+            const newBook = new Book(title, author, pages, status);
+            myLibrary.push(newBook);
         }
     </script>
 </body>
