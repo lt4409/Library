@@ -6,8 +6,10 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="card1"></div>
     <script>
         const myLibrary = [];
+        const card1 = document.getElementById('card1');
 
         function Book(title, author, pages, status) {
             this.title = title;
@@ -22,6 +24,13 @@
         function addBookToLibrary(title, author, pages, status){
             const newBook = new Book(title, author, pages, status);
             myLibrary.push(newBook);
+        }
+
+        
+        function displayBook() {
+            myLibrary.forEach(Book => {
+                card1.innerText = `Title: ${Book.title}, Author: ${book.author}, Year: ${book.year}`;
+            });
         }
     </script>
 </body>
