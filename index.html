@@ -4,34 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .card {
+            background-color: black;
+            color: white;
+            height: 20rem;
+            width: 20rem;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-    <div id="card1"></div>
+    <div id="library"></div>
     <script>
         const myLibrary = [];
-        const card1 = document.getElementById('card1');
+        const libraryContainer = document.getElementById('library');
 
         function Book(title, author, pages, status) {
             this.title = title;
             this.author = author;
             this.pages = pages;
             this.status = status;
-            this.sayInfo = function () {
-                console.log(`${this.title} by ${this.author}, ${this.pages}, ${this.status}`);
-            };
         }
 
         function addBookToLibrary(title, author, pages, status){
             const newBook = new Book(title, author, pages, status);
             myLibrary.push(newBook);
+            displayBook();
         }
 
         
         function displayBook() {
+            libraryContainer.innerHTML = "";
             myLibrary.forEach(Book => {
-                card1.innerText = `Title: ${Book.title}, Author: ${book.author}, Year: ${book.year}`;
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.innerHTML = `
+                    <h3>${Book.title}</h3>
+                    <p><strong>Author:</strong> ${Book.author}</p>
+                    <p><strong>Pages:</strong> ${Book.pages}</p>
+                    <p><strong>Status:</strong> ${Book.status}</p>
+                `;
+                libraryContainer.appendChild(card); 
             });
         }
+
+        addBookToLibrary('The Hobbit', 'J.R.R Tolkien', '295 pages', 'not read yet');
+        addBookToLibrary('Blue Sisters', 'Coco Mellors', '339', 'finished');
+
     </script>
 </body>
 </html>
