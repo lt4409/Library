@@ -6,8 +6,9 @@
     <title>Document</title>
     <style>
         .card {
-            background-color: black;
-            color: white;
+            background-color: lightgrey;
+            color: black;
+            border-left: 20px solid black;
             height: 20rem;
             width: 20rem;
             padding: 1rem;
@@ -18,6 +19,13 @@
 
         .hidden {
             display: none;
+        }
+
+        form {
+            background-color: lightgrey;
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
         }
     </style>
 </head>
@@ -31,9 +39,13 @@
         <label for="author">Author</label>
         <input id="author" type="text">
         <label for="pages">Pages</label>
-        <input id="pages" type="text">
-        <label for="status"></label>
-        <input id="status" type="text">
+        <input id="pages" type="number">
+        <label for="status">Status</label>
+        <select id="status">
+            <option value="not read yet">not read yet</option>
+            <option value="currently reading">currently reading</option>
+            <option value="read">read</option>
+        </select>
         <button type="submit">Add book</button>
     </form>
     <script>
@@ -62,13 +74,28 @@
             myLibrary.forEach((book, index) => {
                 const card = document.createElement("div");
                 card.classList.add("card");
+
+                let bgColor;
+                if (book.status === "not read yet") bgColor = "red";
+                else if (book.status === "currently reading") bgColor = "orange";
+                else if (book.status === "read") bgColor = "green";
+
+
                 card.innerHTML = `
                     <h3>${book.title}</h3>
                     <p><strong>Author:</strong> ${book.author}</p>
                     <p><strong>Pages:</strong> ${book.pages}</p>
-                    <p><strong>Status:</strong> ${book.status}</p>
+                    <p> 
+                        <label for="status-${index}">Status</label>       
+                        <select class="status-select" data-index="${index}" style="background-color: ${bgColor};">
+                            <option value="not read yet" ${book.status === "not read yet" ? "selected" : ""}>not read yet</option>
+                            <option value="currently reading" ${book.status === "currently reading" ? "selected" : ""}>currently reading</option>
+                            <option value="read" ${book.status === "read" ? "selected" : ""}>read</option>
+                        </select>   
+                    </p>
                     <button class="delete-button" data-index="${index}">Delete</button>
                 `;
+                
                 libraryContainer.appendChild(card); 
             });
             
@@ -77,6 +104,20 @@
                     const bookindex = this.getAttribute("data-index");
                     myLibrary.splice(bookindex, 1)
                     displayBook();
+                });
+            });
+
+            document.querySelectorAll(".status-select").forEach(select => {
+                select.addEventListener("change", function () {
+                    const bookIndex = this.getAttribute("data-index");
+                    myLibrary[bookIndex].status = this.value;
+
+                    let newColor;
+                    if (this.value === "not read yet") newColor = "red";
+                    else if (this.value === "currently reading") newColor = "orange";
+                    else if (this.value === "read") newColor = "green";
+
+                    this.style.backgroundColor = newColor;
                 });
             });
         }
@@ -100,7 +141,7 @@
         });
 
         addBookToLibrary('The Hobbit', 'J.R.R Tolkien', '295 pages', 'not read yet');
-        addBookToLibrary('Blue Sisters', 'Coco Mellors', '339', 'finished');
+        addBookToLibrary('Blue Sisters', 'Coco Mellors', '339', 'read');
 
     </script>
 </body>
