@@ -15,14 +15,32 @@
             border-radius: 10px;
             display: inline-block;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div id="library"></div>
-    <button>Add Book</button>
+
+    <button id="add-button">Add Book</button>
+    <form class="hidden" id="book-form">
+        <label for="title">Title</label>
+        <input id="title" type="text">
+        <label for="author">Author</label>
+        <input id="author" type="text">
+        <label for="pages">Pages</label>
+        <input id="pages" type="text">
+        <label for="status"></label>
+        <input id="status" type="text">
+        <button type="submit">Add book</button>
+    </form>
     <script>
         const myLibrary = [];
         const libraryContainer = document.getElementById('library');
+        const addButton = document.getElementById('add-button');
+        const bookForm = document.getElementById('book-form');
 
         function Book(title, author, pages, status) {
             this.title = title;
@@ -52,6 +70,23 @@
                 libraryContainer.appendChild(card); 
             });
         }
+
+        addButton.addEventListener('click', function() {
+            bookForm.classList.toggle("hidden");
+        })
+
+        bookForm.addEventListener("submit", function() {
+            event.preventDefault();
+
+            const title = document.getElementById("title").value;
+            const author = document.getElementById("author").value;
+            const pages = document.getElementById("pages").value;
+            const status = document.getElementById("status").value;
+
+            addBookToLibrary(title, author, pages, status);
+            bookForm.reset();
+            bookForm.classList.add("hidden");
+        });
 
         addBookToLibrary('The Hobbit', 'J.R.R Tolkien', '295 pages', 'not read yet');
         addBookToLibrary('Blue Sisters', 'Coco Mellors', '339', 'finished');
